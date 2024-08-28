@@ -1,72 +1,84 @@
-import 'server-only';
+// Mock data and types for products
 
-import { neon } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-http';
-import {
-  pgTable,
-  text,
-  numeric,
-  integer,
-  timestamp,
-  pgEnum,
-  serial
-} from 'drizzle-orm/pg-core';
-import { count, eq, ilike } from 'drizzle-orm';
-import { createInsertSchema } from 'drizzle-zod';
+export const statusEnum = {
+  active: 'active',
+  inactive: 'inactive',
+  archived: 'archived'
+} as const;
 
-export const db = drizzle(neon(process.env.POSTGRES_URL!));
+export type Status = typeof statusEnum[keyof typeof statusEnum];
 
-export const statusEnum = pgEnum('status', ['active', 'inactive', 'archived']);
+export type Product = {
+  id: number;
+  imageUrl: string;
+  name: string;
+  status: Status;
+  price: number;
+  stock: number;
+  availableAt: Date;
+};
 
-export const products = pgTable('products', {
-  id: serial('id').primaryKey(),
-  imageUrl: text('image_url').notNull(),
-  name: text('name').notNull(),
-  status: statusEnum('status').notNull(),
-  price: numeric('price', { precision: 10, scale: 2 }).notNull(),
-  stock: integer('stock').notNull(),
-  availableAt: timestamp('available_at').notNull()
-});
-
-export type SelectProduct = typeof products.$inferSelect;
-export const insertProductSchema = createInsertSchema(products);
+// Mock products data
+const mockProducts: Product[] = [
+  {
+    id: 1,
+    imageUrl: '/placeholder.svg',
+    name: 'Product 1',
+    status: 'active',
+    price: 19.99,
+    stock: 100,
+    availableAt: new Date()
+  },
+  {
+    id: 2,
+    imageUrl: '/placeholder.svg',
+    name: 'Product 2',
+    status: 'inactive',
+    price: 29.99,
+    stock: 50,
+    availableAt: new Date()
+  },
+  // Add more mock products as needed
+];
 
 export async function getProducts(
   search: string,
   offset: number
 ): Promise<{
-  products: SelectProduct[];
+  products: Product[];
   newOffset: number | null;
   totalProducts: number;
 }> {
-  // Always search the full table, not per page
+  let filteredProducts = mockProducts;
+
   if (search) {
-    return {
-      products: await db
-        .select()
-        .from(products)
-        .where(ilike(products.name, `%${search}%`))
-        .limit(1000),
-      newOffset: null,
-      totalProducts: 0
-    };
+    filteredProducts = mockProducts.filter(product =>
+      product.name.toLowerCase().includes(search.toLowerCase())
+    );
   }
 
-  if (offset === null) {
-    return { products: [], newOffset: null, totalProducts: 0 };
-  }
-
-  let totalProducts = await db.select({ count: count() }).from(products);
-  let moreProducts = await db.select().from(products).limit(5).offset(offset);
-  let newOffset = moreProducts.length >= 5 ? offset + 5 : null;
+  const totalProducts = filteredProducts.length;
+  const productsToReturn = filteredProducts.slice(offset, offset + 5);
+  const newOffset = offset + 5 < totalProducts ? offset + 5 : null;
 
   return {
-    products: moreProducts,
+    products: productsToReturn,
     newOffset,
-    totalProducts: totalProducts[0].count
+    totalProducts
   };
 }
 
-export async function deleteProductById(id: number) {
-  await db.delete(products).where(eq(products.id, id));
+export async function deleteProductById(id: number): Promise<void> {
+  const index = mockProducts.findIndex(product => product.id === id);
+  if (index !== -1) {
+    mockProducts.splice(index, 1);
+  }
 }
+
+export const insertProductSchema = {
+  // Define a simple validation schema if needed
+  parse: (data: any) => {
+    // Implement basic validation logic here
+    return data as Product;
+  }
+};

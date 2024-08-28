@@ -7,7 +7,15 @@ import {
   PanelLeft,
   Settings,
   ShoppingCart,
-  Users2
+  Users2,
+  Search,
+  Calendar,
+  Radio,
+  Users,
+  FileText,
+  FileCheck,
+  Building,
+  CreditCard
 } from 'lucide-react';
 
 import {
@@ -26,11 +34,11 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip';
 import { Analytics } from '@vercel/analytics/react';
-import { User } from './user';
+import { User } from './components/user';
 import { VercelLogo } from '@/components/icons';
 import Providers from './providers';
-import { NavItem } from './nav-item';
-import { SearchInput } from './search';
+import { NavItem } from './components/nav-item';
+import { SearchInput } from './components/search';
 
 export default function DashboardLayout({
   children
@@ -41,7 +49,7 @@ export default function DashboardLayout({
     <Providers>
       <main className="flex min-h-screen w-full flex-col bg-muted/40">
         <DesktopNav />
-        <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+        <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-64">
           <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
             <MobileNav />
             <DashboardBreadcrumb />
@@ -60,49 +68,74 @@ export default function DashboardLayout({
 
 function DesktopNav() {
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
-      <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
+    <aside className="fixed inset-y-0 left-0 z-10 hidden w-64 flex-col border-r bg-background sm:flex">
+      <nav className="flex flex-col gap-4 p-4">
         <Link
           href="https://vercel.com/templates/next.js/admin-dashboard-tailwind-postgres-react-nextjs"
-          className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+          className="flex items-center gap-2 px-2 py-1"
         >
-          <VercelLogo className="h-3 w-3 transition-all group-hover:scale-110" />
-          <span className="sr-only">Acme Inc</span>
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary">
+            <VercelLogo className="h-4 w-4 text-primary-foreground" />
+          </div>
+          <span className="font-semibold text-lg">Univation</span>
         </Link>
 
-        <NavItem href="#" label="Dashboard">
-          <Home className="h-5 w-5" />
-        </NavItem>
+        <div className="mt-4">
+          <h3 className="mb-2 px-2 text-xs font-semibold uppercase text-muted-foreground">Main</h3>
+          <NavItem href="/" label="Home">
+            <Home className="h-5 w-5 mr-3" />
+            Home
+          </NavItem>
+        </div>
 
-        <NavItem href="#" label="Orders">
-          <ShoppingCart className="h-5 w-5" />
-        </NavItem>
+        <div className="mt-4">
+          <h3 className="mb-2 px-2 text-xs font-semibold uppercase text-muted-foreground">Posting</h3>
+          <NavItem href="#" label="Opportunities">
+            <Search className="h-5 w-5 mr-3" />
+            Opportunities
+          </NavItem>
+        </div>
 
-        <NavItem href="/" label="Products">
-          <Package className="h-5 w-5" />
-        </NavItem>
+        <div className="mt-4">
+          <h3 className="mb-2 px-2 text-xs font-semibold uppercase text-muted-foreground">Relationships</h3>
+          <NavItem href="/fairs" label="Fairs">
+            <Calendar className="h-5 w-5 mr-3" />
+            Fairs
+          </NavItem>
+          <NavItem href="#" label="Talent Radar">
+            <Radio className="h-5 w-5 mr-3" />
+            Talent Radar
+          </NavItem>
+          <NavItem href="#" label="Available Talent">
+            <Users className="h-5 w-5 mr-3" />
+            Available Talent
+          </NavItem>
+        </div>
 
-        <NavItem href="/customers" label="Customers">
-          <Users2 className="h-5 w-5" />
-        </NavItem>
-
-        <NavItem href="#" label="Analytics">
-          <LineChart className="h-5 w-5" />
-        </NavItem>
+        <div className="mt-4">
+          <h3 className="mb-2 px-2 text-xs font-semibold uppercase text-muted-foreground">Management</h3>
+          <NavItem href="#" label="Lists">
+            <FileText className="h-5 w-5 mr-3" />
+            Lists
+          </NavItem>
+          <NavItem href="#" label="Applications">
+            <FileCheck className="h-5 w-5 mr-3" />
+            Applications
+          </NavItem>
+        </div>
       </nav>
-      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              href="#"
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-            >
-              <Settings className="h-5 w-5" />
-              <span className="sr-only">Settings</span>
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent side="right">Settings</TooltipContent>
-        </Tooltip>
+      <nav className="mt-auto flex flex-col gap-4 p-4">
+        <div>
+          <h3 className="mb-2 px-2 text-xs font-semibold uppercase text-muted-foreground">Administration</h3>
+          <NavItem href="#" label="Organization">
+            <Building className="h-5 w-5 mr-3" />
+            Organization
+          </NavItem>
+          <NavItem href="#" label="Billing">
+            <CreditCard className="h-5 w-5 mr-3" />
+            Billing
+          </NavItem>
+        </div>
       </nav>
     </aside>
   );

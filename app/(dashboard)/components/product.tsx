@@ -11,9 +11,13 @@ import {
 import { MoreHorizontal } from 'lucide-react';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { SelectProduct } from '@/lib/db';
-import { deleteProduct } from './actions';
 
 export function Product({ product }: { product: SelectProduct }) {
+  const mockDeleteProduct = () => {
+    console.log(`Deleting product with id: ${product.id}`);
+    // In a real application, you would call an API or update state here
+  };
+
   return (
     <TableRow>
       <TableCell className="hidden sm:table-cell">
@@ -48,9 +52,7 @@ export function Product({ product }: { product: SelectProduct }) {
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>Edit</DropdownMenuItem>
             <DropdownMenuItem>
-              <form action={deleteProduct}>
-                <button type="submit">Delete</button>
-              </form>
+              <button onClick={mockDeleteProduct}>Delete</button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
