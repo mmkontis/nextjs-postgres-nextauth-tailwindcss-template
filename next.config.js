@@ -9,8 +9,13 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: '*.public.blob.vercel-storage.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'ui-avatars.com'
       }
-    ]
+    ],
+    domains: ['www.tapback.co', 'picsum.photos']
   }
 };
 

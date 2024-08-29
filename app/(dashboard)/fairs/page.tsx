@@ -18,7 +18,7 @@ const existingFairs = [
     date: "2023-11-15",
     time: "10:00 AM - 4:00 PM",
     type: "in-person",
-    image: "/images/tech-expo.jpg"
+    image: "https://picsum.photos/400/200?random=1"
   },
   {
     id: 2,
@@ -26,7 +26,7 @@ const existingFairs = [
     date: "2023-12-01",
     time: "9:00 AM - 2:00 PM",
     type: "virtual",
-    image: "/images/virtual-job-fair.jpg"
+    image: "https://picsum.photos/400/200?random=2"
   },
   // Add more mock fairs as needed
 ];

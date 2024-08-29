@@ -1,4 +1,4 @@
-<div align="center"><strong>1Next.js 14 Admin Dashboard Template</strong></div>
+<div align="center"><strong>12Next.js 14 Admin Dashboard Template</strong></div>
 <div align="center">Built with the Next.js App Router</div>
 <br />
 <div align="center">
