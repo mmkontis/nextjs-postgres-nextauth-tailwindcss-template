@@ -46,7 +46,6 @@ export default function DashboardLayout({
         <div className="flex-1 flex flex-col ml-64">
           <header className="sticky top-0 z-30 flex h-14 items-center justify-end gap-4 border-b bg-background px-4 sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
             <MobileNav />
-            <User />
           </header>
           <div className="flex-1 flex">
             {selectedPerson ? (
@@ -72,6 +71,7 @@ export default function DashboardLayout({
 }
 
 function DesktopNav({ onPersonClick }: { onPersonClick: (person: Person) => void }) {
+  const [selectedPerson, setSelectedPerson] = useState<string | null>(null);
   const avras = [
     { name: 'John Doe', role: 'Marketing' },
     { name: 'Jane Smith', role: 'Design' },
@@ -80,9 +80,14 @@ function DesktopNav({ onPersonClick }: { onPersonClick: (person: Person) => void
     { name: 'Michael Lee', role: 'Executive Assistant' }
   ];
 
+  const handlePersonClick = (person: Person) => {
+    setSelectedPerson(person.name);
+    onPersonClick(person);
+  };
+
   return (
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-64 flex-col border-r bg-background sm:flex">
-      <nav className="flex flex-col gap-4 p-4">
+      <nav className="flex flex-col gap-4 p-4 flex-grow">
         <Link
           href="/"
           className="flex items-center gap-2 px-2 py-1"
@@ -111,30 +116,35 @@ function DesktopNav({ onPersonClick }: { onPersonClick: (person: Person) => void
             {avras.map(({ name, role }) => (
               <button
                 key={name}
-                onClick={() => onPersonClick({ name, role })}
-                className="flex items-center gap-2 px-2 py-1 hover:bg-muted rounded-md transition-colors"
+                onClick={() => handlePersonClick({ name, role })}
+                className={`flex items-center justify-between px-2 py-1 hover:bg-muted rounded-md transition-colors ${
+                  selectedPerson === name ? 'bg-muted' : ''
+                }`}
               >
-                <Image
-                  src={`https://www.tapback.co/api/avatar/${encodeURIComponent(name)}`}
-                  alt={name}
-                  width={32}
-                  height={32}
-                  className="rounded-full"
-                />
-                <span className="text-sm flex-grow">{name}</span>
-                <Badge variant="outline" className="text-xs">{role}</Badge>
+                <div className="flex items-center gap-2">
+                  <Image
+                    src={`https://www.tapback.co/api/avatar/${encodeURIComponent(name)}`}
+                    alt={name}
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                  />
+                  <span className="text-sm">{name}</span>
+                </div>
+                <Badge variant="outline" className="text-xs whitespace-nowrap">{role}</Badge>
               </button>
             ))}
           </div>
         </div>
       </nav>
       
-      <div className="mt-auto p-4">
-        <div className="mb-4">
+      <div className="mt-auto p-4 border-t">
+        <User />
+        <div className="mt-4">
           <h3 className="mb-2 px-2 text-xs font-semibold uppercase text-muted-foreground">Credits</h3>
           <div className="px-2 text-2xl font-bold">500</div>
         </div>
-        <Button variant="default" className="w-full">Upgrade</Button>
+        <Button variant="default" className="w-full mt-4">Upgrade</Button>
       </div>
     </aside>
   );
