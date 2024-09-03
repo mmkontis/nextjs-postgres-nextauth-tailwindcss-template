@@ -69,15 +69,15 @@ export function User() {
             className="overflow-hidden rounded-full"
           >
             <Image
-              src={user?.image ?? '/placeholder-user.jpg'}
-              width={36}
-              height={36}
-              alt="Avatar"
-              className="overflow-hidden rounded-full"
+              src="https://www.tapback.co/api/avatar/Univation"
+              alt="Univation Logo"
+              width={40}
+              height={40}
+              className="object-cover"
             />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="start" side="bottom" sideOffset={5}>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem onSelect={toggleSettings}>Settings</DropdownMenuItem>

@@ -9,11 +9,21 @@ export interface Person {
   role: string;
 }
 
-export function GeminiChat({ person }: { person: Person }) {
+interface GeminiChatProps {
+  person: Person;
+  isChatMode: boolean;
+  setIsChatMode: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedConversation: string | null;
+}
+
+export function GeminiChat({ person, isChatMode, setIsChatMode, selectedConversation }: GeminiChatProps) {
   return (
     <div className="h-full flex flex-col">
       <div className="p-4 border-b">
-        <h2 className="text-lg font-semibold">Chat with {person.name}</h2>
+        <h2 className="text-lg font-semibold">
+          {person ? `Chat with ${person.name}` : 'Chat'}
+          {selectedConversation && ` - ${selectedConversation}`}
+        </h2>
       </div>
       <div className="flex-1 overflow-y-auto p-4">
         {/* Chat messages will go here */}
